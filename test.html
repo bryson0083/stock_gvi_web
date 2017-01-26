@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
+<meta charset='utf-8'>
+<title>WEB TEST</title>
+</head>
+<body>
+	<script>
+		var ref = new Firebase('https://brysonxue-bfca6.firebaseio.com/demo');
+
+		ref.on("value", function(demo) {
+
+			console.log(demo.val());
+
+		}, function (errorObject) {
+  			console.log("The read failed: " + errorObject.code);
+		});
+	</script>
+<center>
+<h2>WEB TEST</h2>
+</center>
+</div>
+</body>
+</html>

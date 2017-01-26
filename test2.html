@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head>
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
+<meta charset='utf-8'>
+<title>WEB TEST2</title>
+</head>
+<body>
+	<script>
+		var ref = new Firebase('https://brysonxue-bfca6.firebaseio.com/user');
+
+		ref.on("value", function(snapshot) {
+			var user = snapshot.val();
+
+			var user_tables = "<table width=200 border=2 align=center>";
+			user_tables += "<tr><td><h3>user list</h3></td></tr>";
+
+			for (var key in user) {
+				user_tables += "<tr><td>" + user[key].name + "</td></tr>"
+			}
+
+			user_tables += "</table>"
+
+			$('#user_tables').html(user_tables);
+
+		}, function (errorObject) {
+  			console.log("The read failed: " + errorObject.code);
+		});
+	</script>
+<center>
+<h2>WEB TEST2</h2>
+<div id='user_tables'></div>
+</center>
+</div>
+</body>
+</html>

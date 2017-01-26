@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<head>
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
+<meta charset='utf-8'>
+<title>台股上市公司 GVI 排名</title>
+</head>
+<body>
+	<script>
+		var ref = new Firebase('https://brysonxue-bfca6.firebaseio.com/GVI');
+
+		ref.on("value", function(snapshot) {
+			var gvi = snapshot.val();
+
+			var gvi_table = "<table width=1100 border=1 align=center>";
+			gvi_table += "<tr>";
+			gvi_table += "<td align='center' width='100'>公司</td>";
+			gvi_table += "<td align='center' width='100'>目前<br>排名</td>";
+			gvi_table += "<td align='center' width='100'>先前<br>排名</td>";
+			gvi_table += "<td align='center' width='100'>參考<br>股價</td>";
+			gvi_table += "<td align='center' width='100'>每股<br>盈餘<br>(EPS)</td>";
+			gvi_table += "<td align='center' width='100'>參考<br>股價<br>淨值比<br>(PBR)</td>";
+			gvi_table += "<td align='center' width='100'>GVI值</td>";
+			gvi_table += "<td align='center' width='100'>入榜<br>至今<br>績效</td>";
+			gvi_table += "<td align='center' width='100'>近一周<br>績效</td>";
+			gvi_table += "<td align='center' width='100'>近一個月<br>績效</td>";
+			gvi_table += "<td align='center' width='100'>近半年<br>績效</td>";
+			gvi_table += "</tr>";
+
+			for (var key in gvi) {
+				var rt1 = (gvi[key].RATE_1).toFixed(3);
+				var rt2 = (gvi[key].RATE_2).toFixed(3);
+				var rt3 = (gvi[key].RATE_3).toFixed(3);
+				var rt4 = (gvi[key].RATE_4).toFixed(3);
+
+				var color_rt1 = "#FF0000";
+				var color_rt2 = "#FF0000";
+				var color_rt3 = "#FF0000";
+				var color_rt4 = "#FF0000";
+
+				if (rt1 < 0) {
+					color_rt1 = "#00AA55";
+				}
+
+				if (rt2 < 0) {
+					color_rt2 = "#00AA55";
+				}
+
+				if (rt3 < 0) {
+					color_rt3 = "#00AA55";
+				}
+
+				if (rt4 < 0) {
+					color_rt4 = "#00AA55";
+				}
+
+				var rk_chk = "◆"
+				var color_rk = "#000000"
+
+				if (gvi[key].RANK < gvi[key].PREV_RANK) {
+					rk_chk = "▲"
+					color_rk = "#FF0000";
+				}				
+
+				if (gvi[key].RANK > gvi[key].PREV_RANK) {
+					rk_chk = "▼"
+					color_rk = "#00AA55";
+				}	
+
+				gvi_table += "<tr>";
+				gvi_table += "<td align='center'><a href='http://www.wantgoo.com/stock/" + gvi[key].COMP_ID + "?searchType=stocks' target='view_window'>" + gvi[key].COMP_ID + " " + gvi[key].COMP_NAME + "</a></td>";
+				gvi_table += "<td align='center'><font color='" + color_rk + "'>" + rk_chk + " " + gvi[key].RANK + "</font></td>";
+				gvi_table += "<td align='center'>" + gvi[key].PREV_RANK + "</td>";
+				gvi_table += "<td align='left'>" + gvi[key].PRICE + "</td>";
+				gvi_table += "<td align='left'>" + (gvi[key].EPS).toFixed(3) + "</td>";
+				gvi_table += "<td align='left'>" + (gvi[key].PBR).toFixed(3) + "</td>";
+				gvi_table += "<td align='left'>" + (gvi[key].GVI).toFixed(3) + "</td>";
+				gvi_table += "<td align='left'><font color='" + color_rt1 + "'>" + rt1 + "%</font></td>";
+				gvi_table += "<td align='left'><font color='" + color_rt2 + "'>" + rt2 + "%</font></td>";
+				gvi_table += "<td align='left'><font color='" + color_rt3 + "'>" + rt3 + "%</font></td>";
+				gvi_table += "<td align='left'><font color='" + color_rt4 + "'>" + rt4 + "%</font></td>";
+				gvi_table += "</tr>";
+			}
+
+			gvi_table += "</table>";
+
+			$('#gvi_table').html(gvi_table);
+
+		}, function (errorObject) {
+  			console.log("The read failed: " + errorObject.code);
+		});
+	</script>
+<center>
+<h2>台股上市公司 GVI 排名</h2><br>
+<h4>同網頁也可參考<a href="https://stock-ai.com/GVI" target="view_window">STOCK-AI</a>網站</h4>
+<div id='gvi_table'></div>
+<h4>本網頁資料僅供參考</h4>
+</center>
+</div>
+</body>
+</html>
