@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<head>
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
+<meta charset='utf-8'>
+<title>每日程式選股清單_10</title>
+</head>
+<body>
+	<script>
+		var ref = new Firebase('https://brysonxue-bfca6.firebaseio.com/STOCK_S10');
+
+		ref.on("value", function(snapshot) {
+			var stock = snapshot.val();
+
+			var list_table = "<table width=600 border=1 align=center>";
+			list_table += "<tr>";
+			list_table += "<td align='center' width='200'>公司</td>";
+			list_table += "<td align='center' width='100'>外資<br>買賣超<br>天數</td>";
+			list_table += "<td align='center' width='100'>投信<br>買賣超<br>天數</td>";
+			list_table += "<td align='center' width='100'>自營商<br>買賣超<br>天數</td>";
+			list_table += "<td align='center' width='50'>類別</td>";
+			list_table += "<td align='center' width='50'>財報</td>";
+			list_table += "</tr>";
+
+			for (var key in stock) {
+				list_table += "<tr>";
+				list_table += "<td align='center'><a href='http://www.wantgoo.com/stock/" + stock[key].股票代號 + "' target='view_window'>" + stock[key].股票代號 + " " + stock[key].名稱 + "</a></td>";
+				list_table += "<td align='center'>" + stock[key].外資買賣超天數 + "</td>";
+				list_table += "<td align='center'>" + stock[key].投信買賣超天數 + "</td>";
+				list_table += "<td align='center'>" + stock[key].自營商買賣超天數 + "</td>";
+				list_table += "<td align='center'>" + stock[key].類別 + "</td>";
+				list_table += "<td align='center'><a href='https://statementdog.com/analysis/tpe/" + stock[key].股票代號 + "#" + stock[key].股票代號 + "' target='view_window'>財報</a></td>";
+				list_table += "</tr>";
+			}
+			list_table += "<tr><td colspan='5' align='left'>";
+			list_table += "說明:<br>上市櫃股票，3、5、8日均線糾結選股(當天小漲3%以下) + 個股當日三大法人買賣超資訊<p>"
+			list_table += "並加上以上過濾條件<br>"
+			list_table += "A. 近六天成交量平均量成長30%以上，且日均量500張以上<br>"
+			list_table += "B. 當天收盤漲幅，在3%以下<br>"
+			list_table += "C. 最近一交易日，收盤價在8MA跟50MA之上<br>"
+			list_table += "<p>"
+			list_table += "買賣超代碼<br>"
+			list_table += "A類: 三大法人均買超<br>"
+			list_table += "B類: 外資、投信買超<br>"
+			list_table += "C類: 三大法人均賣超<br>"
+			list_table += "D類: 外資、投信賣超<br>"
+			list_table += "E類: 三大法人行為出現轉折<br>"
+			list_table += "Z類: 無明顯趨向(盤整)<p>"
+			list_table += "</td></tr>";
+			list_table += "</table>";
+
+			$('#list_table').html(list_table);
+
+		}, function (errorObject) {
+  			console.log("The read failed: " + errorObject.code);
+		});
+	</script>
+<center>
+<h2>每日程式選股清單_10</h2><br>
+<div id='list_table'></div>
+<h4>本網頁資料僅供參考</h4>
+</center>
+</div>
+</body>
+</html>

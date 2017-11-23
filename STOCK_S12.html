@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
+<meta charset='utf-8'>
+<title>每日程式選股清單_12</title>
+</head>
+<body>
+	<script>
+		var ref = new Firebase('https://brysonxue-bfca6.firebaseio.com/STOCK_S12');
+
+		ref.on("value", function(snapshot) {
+			var stock = snapshot.val();
+
+			var list_table = "<table width=350 border=1 align=center>";
+			list_table += "<tr>";
+			list_table += "<td align='center' width='300'>公司</td>";
+			list_table += "<td align='center' width='50'>財報</td>";
+			list_table += "</tr>";
+
+			for (var key in stock) {
+				list_table += "<tr>";
+				list_table += "<td align='center'><a href='http://www.wantgoo.com/stock/" + stock[key].股票代號 + "' target='view_window'>" + stock[key].股票代號 + " " + stock[key].名稱 + "</a></td>";
+				list_table += "<td align='center'><a href='https://statementdog.com/analysis/tpe/" + stock[key].股票代號 + "#" + stock[key].股票代號 + "' target='view_window'>財報</a></td>";
+				list_table += "</tr>";
+			}
+			list_table += "<tr><td align='left' colspan='2'>";
+			list_table += "說明:<br>選股條件，KD位於低檔(20以下)，日均量大於500張<p>"
+			list_table += "</td></tr>";
+			list_table += "</table>";
+
+			$('#list_table').html(list_table);
+
+		}, function (errorObject) {
+  			console.log("The read failed: " + errorObject.code);
+		});
+	</script>
+<center>
+<h2>每日程式選股清單_12</h2><br>
+<div id='list_table'></div>
+<h4>本網頁資料僅供參考</h4>
+</center>
+</div>
+</body>
+</html>
